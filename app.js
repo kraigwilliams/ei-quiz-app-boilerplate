@@ -61,15 +61,26 @@ const store = {
   score: 0
 };
 
-let render = function(){
+let renderQuiz = function(){
   /* This function displays html on the screen*/
-  console.log('render function is running');
-}
+  console.log('render function ran');
+  $('body').html(`<header><h1>State Quiz App</h1> </header> <main>
+  <h3>Do you know your state capitals?</h3>
+  <h4>Let's find out!</h4>
+  <form action= "https://thinkful-ei-jaguar.github.io/Quiz_AppCK/question1_wireframe.html">
+      <input type= "submit" value= "Submit Answer">
+          </form>
+      
+  <br>
+  <br>
+  <img src="#" alt="Map of the United States"> 
+  </main>`)
+};
 
 let startQuiz =function(){
   /*This function allow the user to press a button
   to start the quiz and display the first question */
-  console.log('startQuiz function is running');
+  console.log('startQuiz function ran');
 
 }
 
@@ -79,14 +90,14 @@ let nextQuestion = function(){
   received feedback to then move on the the next question 
   in the quiz */
 
-  console.log('nextQuestion function is running');
+  console.log('nextQuestion function ran');
 }
 
 let checkAnswer = function(){
   /*This function runs when the user submits thier answer
   to the current question and checks their response with
   the correct answer then display whether they were right or wrong. */
-  console.log('checkAnswer function is running');
+  console.log('checkAnswer function ran');
 
 }
 
@@ -94,7 +105,7 @@ let restartQuiz = function(){
 /* This function runs when the user is finishes the quiz and can 
 submit using a button to do the quiz over from scratch  beginning
 with quesition one*/
-console.log('restartQuiz function is running');
+console.log('restartQuiz function ran');
 }
 
 let showResults= function(){
@@ -102,9 +113,15 @@ let showResults= function(){
   to the quiz questions and then displays the summary of the
   quiz showing their total score on the quiz */
 
-  console.log('showResults function is running');
+  console.log('showResults function ran');
 }
 
+let handleQuizApp = function(){
+  renderQuiz()
+}
+
+// when the page loads, call `handleQuizApp`
+$(handleQuizApp);
 
 
 /**
