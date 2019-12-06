@@ -5,26 +5,58 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'What color is broccoli?',
+      question: 'What is the Capital of Florida?',
       answers: [
-        'red',
-        'orange',
-        'pink',
-        'green'
+        'Orlando',
+        'Miami',
+        'Tallahassee',
+        'Fort Lauderdale'
       ],
-      correctAnswer: 'green'
+      correctAnswer: 'Tallahassee'
     },
     {
-      question: 'What is the current year?',
+      question: 'What is the Capital of California?',
       answers: [
-        '1970',
-        '2015',
-        '2019',
-        '2005'
+        'Los Angeles',
+        'San Diego',
+        'San Francisco',
+        'Sacramento'
       ],
-      correctAnswer: '2019'
+      correctAnswer: 'Sacramento'
+    },
+    {
+      question: 'What is the Capital of Texas?',
+      answers: [
+        'Austin',
+        'Dallas',
+        'Houston',
+        'Texas'
+      ],
+      correctAnswer: 'Austin'
+    },
+    {
+      question: 'What is the Capital of Massachusetts?',
+      answers: [
+        'Salem',
+        'Boston',
+        'Cambridge',
+        'Plymouth'
+      ],
+      correctAnswer: 'Boston'
+    },
+    {
+      question: 'What is the Capital of New York?',
+      answers: [
+        'New York',
+        'Albany',
+        'Buffalo',
+        'Syracuse'
+      ],
+      correctAnswer: 'Boston'
     }
+
   ],
+
   questionNumber: 0,
   score: 0
 };
