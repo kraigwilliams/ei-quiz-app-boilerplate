@@ -52,7 +52,7 @@ const store = {
         'Buffalo',
         'Syracuse'
       ],
-      correctAnswer: 'Boston'
+      correctAnswer: 'Albany'
     }
 
   ],
@@ -60,6 +60,52 @@ const store = {
   questionNumber: 0,
   score: 0
 };
+
+let render = function(){
+  /* This function displays html on the screen*/
+  console.log('render function is running');
+}
+
+let startQuiz =function(){
+  /*This function allow the user to press a button
+  to start the quiz and display the first question */
+  console.log('startQuiz function is running');
+
+}
+
+let nextQuestion = function(){
+  /*This function allows the user to press a button
+  after they have answered the current question and 
+  received feedback to then move on the the next question 
+  in the quiz */
+
+  console.log('nextQuestion function is running');
+}
+
+let checkAnswer = function(){
+  /*This function runs when the user submits thier answer
+  to the current question and checks their response with
+  the correct answer then display whether they were right or wrong. */
+  console.log('checkAnswer function is running');
+
+}
+
+let restartQuiz = function(){
+/* This function runs when the user is finishes the quiz and can 
+submit using a button to do the quiz over from scratch  beginning
+with quesition one*/
+console.log('restartQuiz function is running');
+}
+
+let showResults= function(){
+  /* This functions is run when the user submits the final answer
+  to the quiz questions and then displays the summary of the
+  quiz showing their total score on the quiz */
+
+  console.log('showResults function is running');
+}
+
+
 
 /**
  *
