@@ -87,33 +87,49 @@ let renderQuiz = function () {
 
 };
 
+const finalPageStrings = [];
+const headerString = [];
+const finalAnswerStrings =[];
+const finalSubmitButton = [];
+
+let generateFinalPage = function() { 
+  generateQuestionHeader();
+  generateAnswerStrings();
+  submitAnswer();
+  finalPageStrings.push(headerString + finalAnswerStrings + finalSubmitButton);
+  $('body').html(finalPageStrings.join(""));
+  return finalPageStrings;
+}
+
+let generateQuestionHeader = function() {
+  let questHeaders = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`;
+  return headerString.push(questHeaders);
+};
+
+let generateAnswerStrings = function() {
+    const answerStrings = STORE.questions[STORE.questionNumber].answers.map(answer => {
+      return `<input type="radio" name="question1" value="${answer}">${answer}</input><br><br>`
+    })
+    return finalAnswerStrings.push(answerStrings);
+};
+
+
+let submitAnswer = function() {
+  const submitAnswerBtn = `<input type ="submit" value="Final Answer"</input>`;
+  return finalSubmitButton.push(submitAnswerBtn);
+}
+
 let startQuiz = function () {
   /*This function allow the user to press a button
   to start the quiz and display the first question */
 
-
   console.log('startQuiz function ran');
 
-  $('body').on("click", "#startQuizbtn", function (event) {
-    const finalStrings =[];
-    let questHeaders = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`;
-    finalStrings.push(questHeaders);
+  $('body').on("click", "#startQuizbtn", function(event) {
+      generateFinalPage();
+    });
+};
 
-
-    const answerStrings = STORE.questions[STORE.questionNumber].answers.map(answer => {
-
-      return `<input type="radio" name="question1" value="${answer}">${answer}</input><br><br>`
-
-    })
-
-
-let finalAnswers =answerStrings.join("")
-finalStrings.push(finalAnswers);
-const submitAnswetBtn = `<input type ="submit" value="Final Answer"</input>`;
-finalStrings.push(submitAnswetBtn)
-$('body').html(finalStrings.join(""))
-  })
-}
 
 function showQuestion(question) {
   console.log("pulling questions from store");
