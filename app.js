@@ -67,12 +67,16 @@ const STORE = {
   score: 0
 };
 
+let questionIncrement = function() { 
+/* Question incrementer */
+  STORE.questionNumber++
+  answerStringsHTML(); 
+};
 
-
-let renderQuiz = function () {
-  /* This function displays html on the screen*/
+let quizHomePage = function () {
+  /* This function displays the home page */
   console.log('render function ran');
-  const startQuizPage = `<header><h1>State Quiz App</h1> </header> <main>
+  const quizStartPage = `<header><h1>State Quiz App</h1> </header> <main>
   <h3>Do you know your state capitals?</h3>
   <h4>Let's find out!</h4>
  
@@ -83,63 +87,65 @@ let renderQuiz = function () {
   <img src="#" alt="Map of the United States"> 
   </main>`
 
-  $('body').html(startQuizPage)
-
+  $('body').html(quizStartPage)
 };
 
-const finalPageStrings = [];
-const headerString = [];
-const finalAnswerStrings =[];
-const finalSubmitButton = [];
+let startQuiz = function () {
+  /* Revised "Start Quiz" function to be clearer, prevented default submit action*/
+  console.log('startQuiz function ran');
+  $('body').on("click", "#startQuizbtn", function(event) {
+        event.preventDefault();
+        generateHTML();  
+      }); 
+  };
 
-let generateFinalPage = function() { 
-  generateQuestionHeader();
-  generateAnswerStrings();
-  submitAnswer();
+let nextQuestion = function(question) {
+/* Function will allow users to cycle through quiz */
+    console.log("nextQuestion function ran");
+    $('body').on("click","#submit", function(event) {
+      if (STORE.questionNumber < STORE.questions.length) {
+        event.preventDefault();
+        questionIncrement();
+        generateHTML(); 
+      }
+    });
+  };
+
+const finalPageStrings = []; //array to hold ALL HTML content. 
+const headerString = []; //array to hold ALL header HTML content.
+const finalAnswerStrings =[]; //array to hold ALL answer HTML content.
+const finalSubmitButton = []; //array to hold ALL HTML button submit content.
+
+let questionHeaderHTML = function() { //added "HTML" to end of functin for clarity, modified let name slightly.
+  let questionHeaders = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`;
+  return headerString.push(questionHeaders);
+};
+
+let answerStringsHTML = function() { //added "HTML" to end of function for clarity.
+  const answerStrings = STORE.questions[STORE.questionNumber].answers.map(answer => {
+    return `<input type="radio" name="question1" value="${answer}">${answer}</input><br><br>`
+  })
+  return finalAnswerStrings.push(answerStrings);
+};
+
+let submitAnswerHTML = function() { //added "HTML" to end of function for clarity.
+  const submitAnswerBtn = `<input type ="submit" value="Final Answer"></input>`;
+  return finalSubmitButton.push(submitAnswerBtn);
+}
+
+let generateHTML = function() {  //re-named generateFinalStrings function for clarity as it generates ALL our quiz HTML. 
+  questionHeaderHTML();
+  answerStringsHTML();
+  submitAnswerHTML();
   finalPageStrings.push(headerString + finalAnswerStrings + finalSubmitButton);
   $('body').html(finalPageStrings.join(""));
   return finalPageStrings;
 }
 
-let generateQuestionHeader = function() {
-  let questHeaders = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`;
-  return headerString.push(questHeaders);
-};
-
-let generateAnswerStrings = function() {
-    const answerStrings = STORE.questions[STORE.questionNumber].answers.map(answer => {
-      return `<input type="radio" name="question1" value="${answer}">${answer}</input><br><br>`
-    })
-    return finalAnswerStrings.push(answerStrings);
-};
+/* let cycleQuestions = function(); */
 
 
-let submitAnswer = function() {
-  const submitAnswerBtn = `<input type ="submit" value="Final Answer"</input>`;
-  return finalSubmitButton.push(submitAnswerBtn);
-}
-
-let startQuiz = function () {
-  /*This function allow the user to press a button
-  to start the quiz and display the first question */
-
-  console.log('startQuiz function ran');
-
-  $('body').on("click", "#startQuizbtn", function(event) {
-      generateFinalPage();
-    });
-};
-
-
-function showQuestion(question) {
-  console.log("pulling questions from store");
-
-  const questions = questions.map((item) => generateItemElement(item));
-
-  return items.join("");
-}
-
-let nextQuestion = function () {
+let continueQuiz = function () {
   /*This function allows the user to press a button
   after they have answered the current question and 
   received feedback to then move on the the next question 
@@ -184,7 +190,7 @@ let showResults = function () {
 }
 
 let handleQuizApp = function () {
-  renderQuiz();
+  quizHomePage();
   startQuiz();
 
 }
