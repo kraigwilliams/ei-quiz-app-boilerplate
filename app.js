@@ -69,13 +69,13 @@ const STORE = {
 
 let questionIncrement = function() { 
 /* Question incrementer */
-  STORE.questionNumber++
-  answerStringsHTML(); 
+  STORE.questionNumber++; 
+  generateHTML(); 
 };
 
 let quizHomePage = function () {
   /* This function displays the home page */
-  console.log('render function ran');
+  console.log('quizHomePage function ran');
   const quizStartPage = `<header><h1>State Quiz App</h1> </header> <main>
   <h3>Do you know your state capitals?</h3>
   <h4>Let's find out!</h4>
@@ -99,17 +99,18 @@ let startQuiz = function () {
       }); 
   };
 
-let nextQuestion = function(question) {
+let nextQuestion = function() {
 /* Function will allow users to cycle through quiz */
     console.log("nextQuestion function ran");
-    $('body').on("click","#submit", function(event) {
-      if (STORE.questionNumber < STORE.questions.length) {
-        event.preventDefault();
-        questionIncrement();
-        generateHTML(); 
+    $('body').on("click", "#submit", function(event) {
+      if (STORE.questionNumber < STORE.questions.length - 1) {
+        questionIncrement(); 
       }
-    });
-  };
+      else {
+        quizHomePage();
+      }
+  });
+}
 
 const finalPageStrings = []; //array to hold ALL HTML content. 
 const headerString = []; //array to hold ALL header HTML content.
@@ -155,13 +156,16 @@ let continueQuiz = function () {
 }
 
 //let checkAnswer = function(){
+
 /*This function runs when the user submits thier answer
 to the current question and checks their response with
 the correct answer then display whether they were right or wrong. */
+
 /*console.log('checkAnswer function ran');
 let currentQuestion= $('form').val();
 console.log(currentQuestion)
 */
+
 /*$('form').on("submit", ".question1" ,function(event){
   event.preventDefault();
   if event.id = RTC
@@ -192,6 +196,7 @@ let showResults = function () {
 let handleQuizApp = function () {
   quizHomePage();
   startQuiz();
+  nextQuestion();
 
 }
 
