@@ -135,10 +135,8 @@ function renderQuestions() {
     `
     const answersHTML = STORE.questions[STORE.questionNumber].answers.map(answer => {
     return `
-    <form id ="answer-options">
-    <input type="radio" lang="en" name="answers" value="${answer}">${answer}
+    <input type="radio" name="answers" value="${answer}">${answer}
     </input>
-    </form>
     <br><br>`
     });
 
@@ -178,7 +176,8 @@ function renderQuiz() {
   else if (STORE.questionNumber >= 0 && STORE.questionNumber < 5) {
     renderQuestions(); 
     questionHeaders(); 
-    questionIncrement(); 
+    questionIncrement();
+    updateScore();  
   }
   else if (STORE.questionNumber >= 5) {
     resultsPage(); 
