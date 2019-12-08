@@ -105,14 +105,14 @@ $('header').html(homeHeaderHTML);
 function resultsPage() {
   console.log('resultsPage ran')
   const resultsHeader =  
-  `<header role = "banner">
+  `<header role ="banner">
   <h1>Results</h1>
   <h2>Your final score was ${STORE.userScore} out of 5!</h2>
   </header>`
 
   const resultsHTML = `
-  <form id = "Restart Quiz">
-  <input type="button" id="restart-quiz" aria-label="Restart Quiz Button" value= "Click to Try Again!">
+  <form id = "restart-quiz">
+  <input type="button" id="restart-quiz-button" aria-label="Restart Quiz Button" value= "Click to Try Again!">
   </input>
   </form>
   
