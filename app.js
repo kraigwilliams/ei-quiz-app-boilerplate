@@ -157,6 +157,7 @@ function renderAnswers() {
 
 // this checks the user's answer input. if they have not answered, it prevents them from moving on in the quiz. 
 function checkAnswerInput() {
+  $(".no-answer").remove();
   const selectedAnswer = $("input[name='answers']:checked").val();
   if (selectedAnswer === undefined) {
     $("#next-question").before(`<p class="no-answer">Please select an answer.</p>`);
