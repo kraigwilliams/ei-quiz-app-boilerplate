@@ -162,11 +162,13 @@ function checkAnswerInput() {
     $("#next-question").before(`<p class="no-answer">Please select an answer.</p>`);
   }
   else if (selectedAnswer === STORE.questions[STORE.questionNumber].correctAnswer) {
+    questionIncrement();
     updateScore(); 
     $("#submit-button").hide();
     $("#next-question").show().before(`<p class="correct">Nice job! You got it right! Your current score is ${STORE.userScore} out of 5.`);
   }
   else if (selectedAnswer !== STORE.questions[STORE.questionNumber].correctAnswer) {
+    questionIncrement(); 
     $("#submit-button").hide();
     $("#next-question").show().before(`<p class="incorrect">Sorry! That's incorrect. Your current score is ${STORE.userScore} out of 5.`);
     };
@@ -181,7 +183,6 @@ function checkAnswerInput() {
   });
   $(document).on("click","#submit-button",function(event) {
     checkAnswerInput(); 
-    questionIncrement();
   }); 
   $(document).on("click", "#next-question", function(event) {
     renderQuiz(); 
