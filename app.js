@@ -134,11 +134,11 @@ function renderQuestions() {
 
 function initializeQuiz() {
   console.log('initialize quiz ran'); 
-  $('document').on("click", "#start-quiz", function(event) {  
-    STORE.beginQuiz = true;   
+  $(document).on("click", "#start-quiz", function(event) {  
+    STORE.quizBegin = true;   
     renderQuiz(); 
   });
-  $('document').on("click,", "#submit-answer", function(event) {
+  $(document).on("click,", "#submit-answer", function(event) {
     renderQuiz(); 
     questionIncrement(); 
   });
@@ -150,12 +150,12 @@ function renderQuiz() {
   if (STORE.quizBegin === false) {
     quizHomePage();
   }
-  else if (STORE.questionNumber < 0 && STORE.questionNumber <= 5) {
+  else if (STORE.questionNumber >= 0 && STORE.questionNumber < 5) {
     renderQuestions(); 
     questionHeaders(); 
     questionIncrement(); 
   }
-  else if (STORE.questionNumber > 5) {
+  else if (STORE.questionNumber >= 5) {
     resultsPage(); 
   }
 }; 
