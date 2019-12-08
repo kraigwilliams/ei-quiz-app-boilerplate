@@ -1,8 +1,5 @@
-/**
- * Example store structure
- */
 const STORE = {
-  // 5 or more questions are required
+
   questions: [
     {
 
@@ -64,155 +61,103 @@ const STORE = {
   ],
 
   questionNumber: 0,
-  score: 0
+  score: 0,
+  quizBegin: false
 };
 
-let questionIncrement = function() { 
-/* Question incrementer */
-  STORE.questionNumber++; 
-  generateHTML(); 
-};
+function questionIncrement () { 
+  console.log('questionIncrement ran');
+  /* Question incrementer */
+    STORE.questionNumber++; 
+  };
 
-let quizHomePage = function () {
-  /* This function displays the home page */
-  console.log('quizHomePage function ran');
-  const quizStartPage = `<header><h1>State Quiz App</h1> </header> <main>
-  <h3>Do you know your state capitals?</h3>
-  <h4>Let's find out!</h4>
- 
-  <button id="startQuizbtn">Start Quiz</button>
-      
-  <br>
-  <br>
+function quizHomePage() {
+console.log('quizHomePage ran')
+
+const homePageHTML = 
+` <header><h1>State Quiz App</h1></header>
+  <h1>Do you know your state capitals?</h1>
+  <h2>Let's find out!</h2>
+
+  <form id = "start-page">
+  <input type="button" id="start-quiz" aria-label="Start Page Button" value="Start Quiz"></input>
+  </form>
+
+  <br><br>
   <img src="#" alt="Map of the United States"> 
   </main>`
 
-  $('body').html(quizStartPage)
+$('body').html(homePageHTML); 
+// ran aXe and was dinged for changing header tags out of order....fixed to <h1> THEN <h2>, can style in CSS (will do for results page)
 };
 
-let startQuiz = function () {
-  /* Revised "Start Quiz" function to be clearer, prevented default submit action*/
-  console.log('startQuiz function ran');
-  $('body').on("click", "#startQuizbtn", function(event) {
-        event.preventDefault();
-        generateHTML();  
-      }); 
-  };
+function resultsPage() {
+  console.log('resultsPage ran')
+  const resultsHTML = 
+  `<header class = "Results Header">
+   <h1>Final Results</h1>
+  </header>
+  <h2>You got x out of 5!</h2>
 
-let nextQuestion = function() {
-/* Function will allow users to cycle through quiz */
-    console.log("nextQuestion function ran");
-    $('body').on("click", "#submit", function(event) {
-      if (STORE.questionNumber < STORE.questions.length - 1) {
-        questionIncrement(); 
-      }
-      else {
-        quizHomePage();
-      }
+  <form id = "Restart Quiz>
+  <input type="submit" id="restart-quiz" aria-label="Restart Quiz Button" value= "Click to Try Again"></input>
+  </form>
+  
+  <br>
+  <br>
+  <img src="#" alt="Map of the United States"> 
+  `
+  $('body').html(resultsHTML);
+};
+
+function questionHeaders() {
+  console.log('questionHeaders ran')
+  const headers = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`
+  $('header').html(headers);
+}
+
+function renderQuestions() {
+    console.log('renderQuestions ran')
+    
+    const answersHTML = STORE.questions[STORE.questionNumber].answers.map(answer => {
+    return `<form id ="answers"><input type="radio" lang="en" name="answers" value="${answer}">${answer}</input>/form>
+    <br><br>`
+    });
+
+    //add score and question number tracker here too with const
+
+    const buttonHTML = 
+    `<input type="button" id="submit-answer" aria-label="Submit Answer Button" value="Submit Answer"></input>/`
+
+    $('main').html(answersHTML + buttonHTML); //join together so that they will be on the same page when rendered 
+};
+
+function initializeQuiz() {
+  console.log('initialize quiz ran'); 
+  $('document').on("click", "#start-quiz", function(event) {  
+    STORE.beginQuiz = true;   
+    renderQuiz(); 
   });
+  $('document').on("click,", "#submit-answer", function(event) {
+    renderQuiz(); 
+    questionIncrement(); 
+  });
+  renderQuiz(); 
 }
 
-const finalPageStrings = []; //array to hold ALL HTML content. 
-const headerString = []; //array to hold ALL header HTML content.
-const finalAnswerStrings =[]; //array to hold ALL answer HTML content.
-const finalSubmitButton = []; //array to hold ALL HTML button submit content.
+function renderQuiz() {
+  console.log('renderQuiz function ran')  
+  if (STORE.quizBegin === false) {
+    quizHomePage();
+  }
+  else if (STORE.questionNumber < 0 && STORE.questionNumber <= 5) {
+    renderQuestions(); 
+    questionHeaders(); 
+    questionIncrement(); 
+  }
+  else if (STORE.questionNumber > 5) {
+    resultsPage(); 
+  }
+}; 
 
-let questionHeaderHTML = function() { //added "HTML" to end of functin for clarity, modified let name slightly.
-  let questionHeaders = `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`;
-  return headerString.push(questionHeaders);
-};
-
-let answerStringsHTML = function() { //added "HTML" to end of function for clarity.
-  const answerStrings = STORE.questions[STORE.questionNumber].answers.map(answer => {
-    return `<input type="radio" name="question1" value="${answer}">${answer}</input><br><br>`
-  })
-  return finalAnswerStrings.push(answerStrings);
-};
-
-let submitAnswerHTML = function() { //added "HTML" to end of function for clarity.
-  const submitAnswerBtn = `<input type ="submit" value="Final Answer"></input>`;
-  return finalSubmitButton.push(submitAnswerBtn);
-}
-
-let generateHTML = function() {  //re-named generateFinalStrings function for clarity as it generates ALL our quiz HTML. 
-  questionHeaderHTML();
-  answerStringsHTML();
-  submitAnswerHTML();
-  finalPageStrings.push(headerString + finalAnswerStrings + finalSubmitButton);
-  $('body').html(finalPageStrings.join(""));
-  return finalPageStrings;
-}
-
-/* let cycleQuestions = function(); */
-
-
-let continueQuiz = function () {
-  /*This function allows the user to press a button
-  after they have answered the current question and 
-  received feedback to then move on the the next question 
-  in the quiz */
-
-  console.log('nextQuestion function ran');
-}
-
-//let checkAnswer = function(){
-
-/*This function runs when the user submits thier answer
-to the current question and checks their response with
-the correct answer then display whether they were right or wrong. */
-
-/*console.log('checkAnswer function ran');
-let currentQuestion= $('form').val();
-console.log(currentQuestion)
-*/
-
-/*$('form').on("submit", ".question1" ,function(event){
-  event.preventDefault();
-  if event.id = RTC
-})
-*/
-
-/*store.forEach(function(ques){
-if (FormData. ==)
-})*/
-
-
-
-let restartQuiz = function () {
-  /* This function runs when the user is finishes the quiz and can 
-  submit using a button to do the quiz over from scratch  beginning
-  with quesition one*/
-  console.log('restartQuiz function ran');
-}
-
-let showResults = function () {
-  /* This functions is run when the user submits the final answer
-  to the quiz questions and then displays the summary of the
-  quiz showing their total score on the quiz */
-
-  console.log('showResults function ran');
-}
-
-let handleQuizApp = function () {
-  quizHomePage();
-  startQuiz();
-  nextQuestion();
-
-}
-
-// when the page loads, call `handleQuizApp`
-$(handleQuizApp);
-
-
-/**
- *
- * Your app should include a render() function, that regenerates
- * the view each time the store is updated. See your course
- * material, consult your instructor, and reference the slides
- * for more details.
- *
- * NO additional HTML elements should be added to the index.html file.
- *
- * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
- *
- */
+$(initializeQuiz)
