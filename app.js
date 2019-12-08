@@ -31,7 +31,7 @@ const STORE = {
         'Austin',
         'Dallas',
         'Houston',
-        'Texas'
+        'San Antonio'
       ],
       correctAnswer: 'Austin'
     },
@@ -171,7 +171,8 @@ function checkAnswerInput() {
   else if (selectedAnswer !== STORE.questions[STORE.questionNumber].correctAnswer) {
     questionIncrement(); 
     $("#submit-button").hide();
-    $("#next-question").show().before(`<p class="incorrect">Sorry! That's incorrect. Your current score is ${STORE.userScore} out of 5.`);
+    $("#next-question").show().before(`<p class="incorrect">Sorry! That's incorrect. The correct answer is ${STORE.questions[STORE.questionNumber -1].correctAnswer}.  
+    Your current score is ${STORE.userScore} out of 5.`);
     };
   };
 
