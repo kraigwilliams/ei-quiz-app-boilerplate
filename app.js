@@ -102,7 +102,7 @@ function resultsPage() {
   const resultsHeader =  
   `<header>
   <h1>Final Results</h1>
-  <h2>You got ${STORE.score} out of 5!</h2>
+  <h2>You got ${STORE.userScore} out of 5!</h2>
   </header>`
 
   const resultsHTML = `
@@ -143,12 +143,26 @@ function renderQuestions() {
     //add score and question number tracker here too with const
 
     const buttonHTML = 
-    `<input type="button" id="submit-answer" aria-label="Submit Answer Button" value="Submit Answer">
-    </input>`
+    `<input type="button" id="next-question" aria-label="Next Question Button" value="Next Question"></input>
+     <input type="button" id="submit-button" aria-label="Submit Answer Button" value="Submit Answer"></input>`
 
     $('main').html(questionCounter + answersHTML.join('') + buttonHTML); 
+    $('#next-question').hide()
     //join together so that they will be on the same page when rendered 
 };
+
+function checkAnswers() {
+  const selectedAnswer = $("input[name='answers']:checked").val();
+  if (selectedAnswer === STORE.questions[STORE.questionNumber].correctAnswer) {
+    updateScore(); 
+    $("#submit-button").hide();
+    $("#next-question").show().before(`<p>Nice job! You got it right! Your current score is ${STORE.userScore} out of 5.`)
+  }
+  else {
+    $("#submit-button").hide();
+    $("next-question").show().before(`<p>Sorry, that's incorrect! Your current score is ${STORE.userSCORE} out of 5.`)
+    };
+  };
 
 function initializeQuiz() {
   console.log('initialize quiz ran'); 
@@ -156,7 +170,11 @@ function initializeQuiz() {
     STORE.quizBegin = true;   
     renderQuiz();
   });
-  $(document).on("click", "#submit-answer", function(event) {
+  $(document).on("click","#submit-button",function(event) {
+    checkAnswers(); 
+    questionIncrement();
+  }); 
+  $(document).on("click", "#next-question", function(event) {
     renderQuiz(); 
   });
   $(document).on("click", "#restart-quiz", function(event) {
@@ -176,8 +194,6 @@ function renderQuiz() {
   else if (STORE.questionNumber >= 0 && STORE.questionNumber < 5) {
     renderQuestions(); 
     questionHeaders(); 
-    questionIncrement();
-    updateScore();  
   }
   else if (STORE.questionNumber >= 5) {
     resultsPage(); 
