@@ -65,16 +65,19 @@ const STORE = {
   quizBegin: false
 };
 
+//this increments questionNumber (which will always be different than the ACTUAL INDEX)
 function questionIncrement () { 
 console.log('questionIncrement ran');
     STORE.questionNumber++;
   };
 
+//this increments the score of the user
 function updateScore() {
 console.log('updateScore ran') 
   STORE.userScore++;
 };
 
+//this handles the HTML for the quiz's landing page.
 function quizHomePage() {
 console.log('quizHomePage ran')
 
@@ -96,9 +99,9 @@ console.log('quizHomePage ran')
 
 $('main').html(homePageHTML); 
 $('header').html(homeHeaderHTML);
-// ran aXe and was dinged for changing header tags out of order....fixed to <h1> THEN <h2>, can style in CSS (will do for results page)
 };
 
+// this handles the HTML for the results page. 
 function resultsPage() {
   console.log('resultsPage ran')
   const resultsHeader =  
@@ -121,6 +124,7 @@ function resultsPage() {
   $('header').html(resultsHeader);
 };
 
+// this handles the HTML for the user's progress/score and acutal question text.
 function questionInformation() {
   console.log('questionHeaders ran')
   const headers = 
@@ -132,6 +136,7 @@ function questionInformation() {
   $('header').html(headers + questionTracker + scoreTracker);
 }
 
+// this handles the HTML for the answers and buttons on every question page. 
 function renderAnswers() {
     console.log('renderAnswersran');
 
@@ -148,9 +153,9 @@ function renderAnswers() {
 
     $('main').html(answersHTML.join('') + buttonHTML); 
     $('#next-question').hide()
-    //join together so that they will be on the same page when rendered 
 };
 
+// this checks the user's answer input. if they have not answered, it prevents them from moving on in the quiz. 
 function checkAnswerInput() {
   const selectedAnswer = $("input[name='answers']:checked").val();
   if (selectedAnswer === undefined) {
@@ -167,7 +172,8 @@ function checkAnswerInput() {
     };
   };
 
-function initializeQuiz() {
+// this loads all button interactions IMMEDIATELY so that the uer can interact with the page based on several checks.
+  function initializeQuiz() {
   console.log('initialize quiz ran'); 
   $(document).on("click", "#start-quiz", function(event) {  
     STORE.quizBegin = true;   
@@ -189,6 +195,7 @@ function initializeQuiz() {
   renderQuiz(); 
 }; 
 
+// this re-renders the quiz page EVERY TIME the user interacts with a button and based on several checks.
 function renderQuiz() {
   console.log('renderQuiz function ran')  
   if (STORE.quizBegin === false) {
@@ -204,4 +211,5 @@ function renderQuiz() {
   }
 }; 
 
+// calls initializeQuiz to get button interaction to load immediately for users. 
 $(initializeQuiz);
