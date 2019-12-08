@@ -61,51 +61,51 @@ const STORE = {
   ],
 
   questionNumber: 0,
-  score: 0,
+  userScore: 0,
   quizBegin: false
 };
 
 function questionIncrement () { 
   console.log('questionIncrement ran');
-  /* Question incrementer */
     STORE.questionNumber++;
   };
 
 function updateScore() {
-  STORE.score++;
+  STORE.userScore++;
 };
 
 function quizHomePage() {
 console.log('quizHomePage ran')
 
-const homePageHTML = 
-` <main>
-  <header><h1>State Quiz App</h1></header>
+  const homeHeaderHTML= 
+  `<header><h1>State Quiz App</h1>
+  </header>
   <h1>Do you know your state capitals?</h1>
-  <h2>Let's find out!</h2>
-
+  <h2>Let's find out!</h2>`
+  
+  const homePageHTML = 
+  `<main>
   <form id = "start-page">
   <input type="button" id="start-quiz" aria-label="Start Page Button" value="Start Quiz"></input>
   </form>
-
   <br><br>
   <img src="#" alt="Map of the United States"> 
   </main>`
 
 $('main').html(homePageHTML); 
+$('header').html(homeHeaderHTML);
 // ran aXe and was dinged for changing header tags out of order....fixed to <h1> THEN <h2>, can style in CSS (will do for results page)
 };
 
 function resultsPage() {
   console.log('resultsPage ran')
-  const resultsHTML =  
-  `
-  <main>
-  <header class = "Results Header">
+  const resultsHeader =  
+  `<header>
   <h1>Final Results</h1>
-  </header>
-  <h2>You got x out of 5!</h2>
+  <h2>You got ${STORE.score} out of 5!</h2>
+  </header>`
 
+  const resultsHTML = `
   <form id = "Restart Quiz">
   <input type="button" id="restart-quiz" aria-label="Restart Quiz Button" value= "Click to Try Again!">
   </input>
@@ -114,19 +114,15 @@ function resultsPage() {
   <br>
   <br>
   <img src="#" alt="Map of the United States"> 
-  </main> 
   `
   $('main').html(resultsHTML);
+  $('header').html(resultsHeader);
 };
 
 function questionHeaders() {
   console.log('questionHeaders ran')
   const headers = 
-  `<main>
-  <header>
-  <h2>${STORE.questions[STORE.questionNumber].question} </h2>
-  </header>
-  </main>`
+  `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`
   $('header').html(headers);
 }
 
@@ -139,22 +135,18 @@ function renderQuestions() {
     `
     const answersHTML = STORE.questions[STORE.questionNumber].answers.map(answer => {
     return `
-    <main>
     <form id ="answer-options">
     <input type="radio" lang="en" name="answers" value="${answer}">${answer}
     </input>
     </form>
-    <br><br>
-    </main>`
+    <br><br>`
     });
 
     //add score and question number tracker here too with const
 
     const buttonHTML = 
-    `<main>
-    <input type="button" id="submit-answer" aria-label="Submit Answer Button" value="Submit Answer">
-    </input>
-    </main>`
+    `<input type="button" id="submit-answer" aria-label="Submit Answer Button" value="Submit Answer">
+    </input>`
 
     $('main').html(questionCounter + answersHTML.join('') + buttonHTML); 
     //join together so that they will be on the same page when rendered 
@@ -169,15 +161,14 @@ function initializeQuiz() {
   $(document).on("click", "#submit-answer", function(event) {
     renderQuiz(); 
   });
-  renderQuiz(); 
-}
-
-function resetQuiz() {
   $(document).on("click", "#restart-quiz", function(event) {
-    STORE.quizBegin = false;  
-    renderQuiz(); 
+    STORE.quizBegin = false;
+    STORE.questionNumber = 0;
+    STORE.userScore = 0; 
+    quizHomePage();
   });
-};
+  renderQuiz(); 
+}; 
 
 function renderQuiz() {
   console.log('renderQuiz function ran')  
@@ -191,9 +182,6 @@ function renderQuiz() {
   }
   else if (STORE.questionNumber >= 5) {
     resultsPage(); 
-  }
-  else if (STORE.questionNumber >= 5 && storeQuizBegin === false) {
-    resetQuiz(); 
   }
 }; 
 
