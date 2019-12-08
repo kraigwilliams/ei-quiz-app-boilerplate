@@ -102,7 +102,7 @@ function resultsPage() {
   const resultsHeader =  
   `<header>
   <h1>Final Results</h1>
-  <h2>You got ${STORE.userScore} out of 5!</h2>
+  <h2>Your final score was ${STORE.userScore} out of 5!</h2>
   </header>`
 
   const resultsHTML = `
@@ -197,6 +197,7 @@ function renderQuiz() {
   }
   else if (STORE.questionNumber >= 5) {
     resultsPage(); 
+    updateScore(); 
   }
 }; 
 
