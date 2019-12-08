@@ -66,11 +66,12 @@ const STORE = {
 };
 
 function questionIncrement () { 
-  console.log('questionIncrement ran');
+console.log('questionIncrement ran');
     STORE.questionNumber++;
   };
 
 function updateScore() {
+console.log('updateScore ran') 
   STORE.userScore++;
 };
 
@@ -78,13 +79,14 @@ function quizHomePage() {
 console.log('quizHomePage ran')
 
   const homeHeaderHTML= 
-  `<header><h1>State Quiz App</h1>
+  `<header role="banner">
+  <h1> State Quiz App </h1>
   </header>
-  <h1>Do you know your state capitals?</h1>
-  <h2>Let's find out!</h2>`
+  <h2 class ="title-2"> Do you know your state capitals? </h2>
+  <h3 class ="title-3"> Let's find out! </h3>`
   
   const homePageHTML = 
-  `<main>
+  `<main id = "home-page">
   <form id = "start-page">
   <input type="button" id="start-quiz" aria-label="Start Page Button" value="Start Quiz"></input>
   </form>
@@ -100,8 +102,8 @@ $('header').html(homeHeaderHTML);
 function resultsPage() {
   console.log('resultsPage ran')
   const resultsHeader =  
-  `<header>
-  <h1>Final Results</h1>
+  `<header role = "banner">
+  <h1>Results</h1>
   <h2>Your final score was ${STORE.userScore} out of 5!</h2>
   </header>`
 
@@ -119,48 +121,49 @@ function resultsPage() {
   $('header').html(resultsHeader);
 };
 
-function questionHeaders() {
+function questionInformation() {
   console.log('questionHeaders ran')
   const headers = 
-  `<h2>${STORE.questions[STORE.questionNumber].question} </h2>`
-  $('header').html(headers);
+  `<h3 class = "question-text">${STORE.questions[STORE.questionNumber].question}</h3>`
+  const questionTracker =
+  `<p class = "question-tracker"> You are on Question ${STORE.questionNumber + 1} of 5. </p>`;
+  const scoreTracker = 
+  `<p class = "score-tracker"> Your current score is ${STORE.userScore} out of 5. </p>`
+  $('header').html(headers + questionTracker + scoreTracker);
 }
 
-function renderQuestions() {
-    console.log('renderQuestions ran')
-    
-    const questionCounter = 
-    `
-    <strong class = "question-count" aria-label= "Quiz Progress"></strong>
-    `
+function renderAnswers() {
+    console.log('renderAnswersran');
+
     const answersHTML = STORE.questions[STORE.questionNumber].answers.map(answer => {
     return `
-    <input type="radio" name="answers" value="${answer}">${answer}
+    <input type="radio" name="answers" aria-label="Answer Selections" value="${answer}">${answer}
     </input>
     <br><br>`
     });
-
-    //add score and question number tracker here too with const
 
     const buttonHTML = 
     `<input type="button" id="next-question" aria-label="Next Question Button" value="Next Question"></input>
      <input type="button" id="submit-button" aria-label="Submit Answer Button" value="Submit Answer"></input>`
 
-    $('main').html(questionCounter + answersHTML.join('') + buttonHTML); 
+    $('main').html(answersHTML.join('') + buttonHTML); 
     $('#next-question').hide()
     //join together so that they will be on the same page when rendered 
 };
 
-function checkAnswers() {
+function checkAnswerInput() {
   const selectedAnswer = $("input[name='answers']:checked").val();
-  if (selectedAnswer === STORE.questions[STORE.questionNumber].correctAnswer) {
+  if (selectedAnswer === undefined) {
+    $("#next-question").before(`<p class="no-answer">Please select an answer.</p>`);
+  }
+  else if (selectedAnswer === STORE.questions[STORE.questionNumber].correctAnswer) {
     updateScore(); 
     $("#submit-button").hide();
-    $("#next-question").show().before(`<p>Nice job! You got it right! Your current score is ${STORE.userScore} out of 5.`)
+    $("#next-question").show().before(`<p class="correct">Nice job! You got it right! Your current score is ${STORE.userScore} out of 5.`);
   }
-  else {
+  else if (selectedAnswer !== STORE.questions[STORE.questionNumber].correctAnswer) {
     $("#submit-button").hide();
-    $("next-question").show().before(`<p>Sorry, that's incorrect! Your current score is ${STORE.userSCORE} out of 5.`)
+    $("#next-question").show().before(`<p class="incorrect">Sorry! That's incorrect. Your current score is ${STORE.userScore} out of 5.`);
     };
   };
 
@@ -171,7 +174,7 @@ function initializeQuiz() {
     renderQuiz();
   });
   $(document).on("click","#submit-button",function(event) {
-    checkAnswers(); 
+    checkAnswerInput(); 
     questionIncrement();
   }); 
   $(document).on("click", "#next-question", function(event) {
@@ -192,8 +195,8 @@ function renderQuiz() {
     quizHomePage();
   }
   else if (STORE.questionNumber >= 0 && STORE.questionNumber < 5) {
-    renderQuestions(); 
-    questionHeaders(); 
+    renderAnswers(); 
+    questionInformation();
   }
   else if (STORE.questionNumber >= 5) {
     resultsPage(); 
